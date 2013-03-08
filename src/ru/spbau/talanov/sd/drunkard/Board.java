@@ -38,6 +38,7 @@ public final class Board {
     }
 
     public void setEmpty(@NotNull Position position) {
+        //noinspection ConstantConditions
         objects.put(position, null);
     }
 
