@@ -7,10 +7,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class Drunkard implements Movable, Actor {
 
-    private static final int TURNS_UNCONSCIOUS = 5;
+    private enum State {
+        SLEEPING,
+        WALKING
+    }
 
-    private int sleepDuration = 0;
-
+    @NotNull
+    private State state = State.WALKING;
 
     public Drunkard(@NotNull Position position) {
         this.position = position;
@@ -43,7 +46,7 @@ public final class Drunkard implements Movable, Actor {
     @Override
     public void performMove(@NotNull Board board) {
         if (isAsleep()) {
-            sleepTurn();
+            return;
         }
         Position randomMove = getPosition().randomAdjacentPosition();
         if (!board.isValid(randomMove)) {
@@ -56,16 +59,11 @@ public final class Drunkard implements Movable, Actor {
         board.move(this, randomMove);
     }
 
-
     private void fallAsleep() {
-        sleepDuration = TURNS_UNCONSCIOUS;
+        state = State.SLEEPING;
     }
 
     private boolean isAsleep() {
-        return sleepDuration > 0;
-    }
-
-    private void sleepTurn() {
-        --sleepDuration;
+        return state == State.SLEEPING;
     }
 }
