@@ -13,7 +13,8 @@ public final class Drunkard implements Movable, Actor {
 
     private enum State {
         SLEEPING,
-        WALKING
+        WALKING,
+        LYING
     }
 
     @NotNull
@@ -49,7 +50,7 @@ public final class Drunkard implements Movable, Actor {
 
     @Override
     public void performMove(@NotNull Board board) {
-        if (isAsleep()) {
+        if (!canMove()) {
             return;
         }
         Position randomMove = getPosition().randomAdjacentPosition();
@@ -57,30 +58,40 @@ public final class Drunkard implements Movable, Actor {
             return;
         }
         if (!board.isEmpty(randomMove)) {
-            fallAsleep();
+            mayBeChangeStatus(board, randomMove);
             return;
         }
         doMove(board, randomMove);
     }
 
-    private void doMove(Board board, Position randomMove) {
+    private void mayBeChangeStatus(@NotNull Board board, @NotNull Position desiredDirection) {
+        BoardObject obstacle = board.getObject(desiredDirection);
+        if (obstacle instanceof Column ||
+                (obstacle instanceof Drunkard && ((Drunkard) obstacle).state == State.SLEEPING)) {
+            System.out.println("Column!");
+            state = State.SLEEPING;
+        } else if (obstacle instanceof Bottle) {
+            System.out.println("Bottle!");
+            board.setEmpty(desiredDirection);
+            board.move(this, desiredDirection);
+            state = State.LYING;
+        }
+    }
+
+    private void doMove(@NotNull Board board, @NotNull Position randomMove) {
         Position oldPosition = getPosition();
         board.move(this, randomMove);
         assert board.isEmpty(oldPosition);
-        if (drunnkardDropsBottle()) {
+        if (drunkardDropsBottle()) {
             board.addObject(new Bottle(oldPosition));
         }
     }
 
-    private boolean drunnkardDropsBottle() {
+    private boolean drunkardDropsBottle() {
         return RANDOM.nextInt(30) == 0;
     }
 
-    private void fallAsleep() {
-        state = State.SLEEPING;
-    }
-
-    private boolean isAsleep() {
-        return state == State.SLEEPING;
+    private boolean canMove() {
+        return state == State.WALKING;
     }
 }
