@@ -5,7 +5,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Pavel Talanov
  */
-public final class Drunkard implements Movable {
+public final class Drunkard implements Movable, Actor {
+
+    private static final int TURNS_UNCONSCIOUS = 5;
+
+    private int sleepDuration = 0;
+
 
     public Drunkard(@NotNull Position position) {
         this.position = position;
@@ -33,5 +38,34 @@ public final class Drunkard implements Movable {
     @Override
     public String toString() {
         return String.valueOf(representation());
+    }
+
+    @Override
+    public void performMove(@NotNull Board board) {
+        if (isAsleep()) {
+            sleepTurn();
+        }
+        Position randomMove = getPosition().randomAdjacentPosition();
+        if (!board.isValid(randomMove)) {
+            return;
+        }
+        if (!board.isEmpty(randomMove)) {
+            fallAsleep();
+            return;
+        }
+        board.move(this, randomMove);
+    }
+
+
+    private void fallAsleep() {
+        sleepDuration = TURNS_UNCONSCIOUS;
+    }
+
+    private boolean isAsleep() {
+        return sleepDuration > 0;
+    }
+
+    private void sleepTurn() {
+        --sleepDuration;
     }
 }

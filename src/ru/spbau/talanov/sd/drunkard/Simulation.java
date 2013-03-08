@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author Pavel Talanov
@@ -17,20 +19,19 @@ public final class Simulation {
     private final PrintStream debugOut;
 
     private static final int MAX_MOVES = 200;
-    private static final int TURNS_UNCONSCIOUS = 5;
 
     @NotNull
-    private Drunkard drunkard;
+    private final Board board;
     @NotNull
-    private Board board;
+    private final Collection<Actor> actors;
 
-    private int drunkardSleepDuration = 0;
 
     public Simulation(@NotNull PrintStream resultOut, @NotNull PrintStream debugOut) {
         this.resultOut = resultOut;
         this.debugOut = debugOut;
         this.board = new Board(15);
-        drunkard = new Drunkard(new Position(0, 0));
+        Drunkard drunkard = new Drunkard(new Position(0, 0));
+        this.actors = Arrays.<Actor>asList(drunkard);
         this.board.addObject(drunkard);
         final Position obstaclePosition = new Position(7, 7);
         BoardObject obstacle = new BoardObject() {
@@ -60,31 +61,11 @@ public final class Simulation {
     }
 
     private void makeMove() {
-        if (isAsleep()) {
-            sleepTurn();
+        for (Actor actor : actors) {
+            actor.performMove(board);
         }
-        Position randomMove = drunkard.getPosition().randomAdjacentPosition();
-        if (!board.isValid(randomMove)) {
-            return;
-        }
-        if (!board.isEmpty(randomMove)) {
-            fallAsleep();
-            return;
-        }
-        board.move(drunkard, randomMove);
     }
 
-    private void fallAsleep() {
-        drunkardSleepDuration = TURNS_UNCONSCIOUS;
-    }
-
-    private boolean isAsleep() {
-        return drunkardSleepDuration > 0;
-    }
-
-    private void sleepTurn() {
-        --drunkardSleepDuration;
-    }
 
     public static void main(String[] args) {
         try (FileOutputStream debugFileStream = new FileOutputStream("debug.out")) {
