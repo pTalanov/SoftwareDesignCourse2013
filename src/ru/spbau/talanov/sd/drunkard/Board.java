@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public final class Board {
 
-    public static final char EMPTY_CELL_CHAR = 'O';
+    public static final char EMPTY_CELL_CHAR = '.';
 
     public Board(int size) {
         this.size = size;

@@ -14,7 +14,7 @@ public final class BoardTest {
 
     @Test
     public void emptyBoard() {
-        assertEquals("OOO\nOOO\nOOO\n", new Board(3).representation());
+        assertEquals("...\n...\n...\n", new Board(3).representation());
     }
 
     @Test
@@ -22,8 +22,8 @@ public final class BoardTest {
         Board board = new Board(3);
         Drunkard drunkard = new Drunkard(new Position(2, 1));
         board.addObject(drunkard);
-        assertEquals("OOO\nOOD\nOOO\n", board.representation());
+        assertEquals("...\n..D\n...\n", board.representation());
         board.move(drunkard, new Position(0, 0));
-        assertEquals("OOO\nOOO\nDOO\n", board.representation());
+        assertEquals("...\n...\nD..\n", board.representation());
     }
 }
