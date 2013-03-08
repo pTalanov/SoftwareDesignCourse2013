@@ -33,20 +33,7 @@ public final class Simulation {
         Drunkard drunkard = new Drunkard(new Position(0, 0));
         this.actors = Arrays.<Actor>asList(drunkard);
         this.board.addObject(drunkard);
-        final Position obstaclePosition = new Position(7, 7);
-        BoardObject obstacle = new BoardObject() {
-            @NotNull
-            @Override
-            public Position getPosition() {
-                return obstaclePosition;
-            }
-
-            @Override
-            public char representation() {
-                return 'I';
-            }
-        };
-        board.addObject(obstacle);
+        board.addObject(new Column(new Position(7, 7)));
     }
 
     public void simulate() {
