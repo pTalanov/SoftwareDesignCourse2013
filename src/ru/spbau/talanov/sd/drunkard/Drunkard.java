@@ -2,10 +2,14 @@ package ru.spbau.talanov.sd.drunkard;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 /**
  * @author Pavel Talanov
  */
 public final class Drunkard implements Movable, Actor {
+
+    public static final Random RANDOM = new Random();
 
     private enum State {
         SLEEPING,
@@ -56,7 +60,20 @@ public final class Drunkard implements Movable, Actor {
             fallAsleep();
             return;
         }
+        doMove(board, randomMove);
+    }
+
+    private void doMove(Board board, Position randomMove) {
+        Position oldPosition = getPosition();
         board.move(this, randomMove);
+        assert board.isEmpty(oldPosition);
+        if (drunnkardDropsBottle()) {
+            board.addObject(new Bottle(oldPosition));
+        }
+    }
+
+    private boolean drunnkardDropsBottle() {
+        return RANDOM.nextInt(30) == 0;
     }
 
     private void fallAsleep() {
