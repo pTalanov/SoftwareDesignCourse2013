@@ -36,7 +36,7 @@ public final class Board {
     }
 
     public void move(@NotNull Movable objectToMove, @NotNull Position whereTo) {
-        assert isEmpty(whereTo);
+        assert isEmpty(whereTo) && isValid(whereTo);
         setEmpty(objectToMove.getPosition());
         objectToMove.setPosition(whereTo);
         addObject(objectToMove);
