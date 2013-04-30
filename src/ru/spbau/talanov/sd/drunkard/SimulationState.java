@@ -23,7 +23,7 @@ public final class SimulationState {
 
     private SimulationState(@NotNull Board board, @NotNull List<Actor> actors) {
         this.board = board;
-        this.actors = actors;
+        this.actors = new ArrayList<>(actors);
     }
 
     @NotNull

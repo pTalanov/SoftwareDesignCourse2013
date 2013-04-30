@@ -10,7 +10,8 @@ import java.util.Map;
  */
 public final class Board {
 
-    public static final char EMPTY_CELL_CHAR = '.';
+    private static final char EMPTY_CELL_CHAR = '.';
+    private static final char NOTHING_CHAR = ' ';
 
     public Board(int size) {
         this.size = size;
@@ -23,6 +24,10 @@ public final class Board {
 
     public void addObject(@NotNull BoardObject object) {
         assert isValid(object.getPosition());
+        addSpecialObject(object);
+    }
+
+    public void addSpecialObject(@NotNull BoardObject object) {
         BoardObject existing = objects.put(object.getPosition(), object);
         if (existing != null) {
             throw new IllegalStateException("Adding object " + object.representation() + " at position "
@@ -58,8 +63,8 @@ public final class Board {
     @NotNull
     public String representation() {
         StringBuilder sb = new StringBuilder();
-        for (int y = getTop(); y >= getBottom(); --y) {
-            for (int x = getLeft(); x <= getRight(); ++x) {
+        for (int y = getBottom() - 1; y <= getTop(); ++y) {
+            for (int x = getLeft() - 1; x <= getRight(); ++x) {
                 sb.append(representationAt(new Position(x, y)));
             }
             sb.append("\n");
@@ -68,10 +73,14 @@ public final class Board {
     }
 
     private char representationAt(@NotNull Position position) {
-        if (isEmpty(position)) {
-            return EMPTY_CELL_CHAR;
-        } else {
+        if (!isEmpty(position)) {
             return getObject(position).representation();
+        }
+        if (!isValid(position)) {
+            return NOTHING_CHAR;
+        } else {
+            assert isEmpty(position);
+            return EMPTY_CELL_CHAR;
         }
     }
 
