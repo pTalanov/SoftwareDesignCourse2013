@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * @author Pavel Talanov
  */
-public final class Drunkard implements Movable, Actor {
+public final class Drunkard extends MovableObject implements Actor {
 
     public static final Random RANDOM = new Random();
 
@@ -27,21 +27,7 @@ public final class Drunkard implements Movable, Actor {
     private State state = State.WALKING;
 
     public Drunkard(@NotNull Position position) {
-        this.position = position;
-    }
-
-    @NotNull
-    private Position position;
-
-    @NotNull
-    @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public void setPosition(@NotNull Position position) {
-        this.position = position;
+        super(position);
     }
 
     @Override
@@ -54,18 +40,23 @@ public final class Drunkard implements Movable, Actor {
         return String.valueOf(representation());
     }
 
+    public boolean shouldBePickedByPoliceman() {
+        return state == State.LYING || state == State.SLEEPING;
+    }
+
     @Override
     public void performMove(@NotNull SimulationState simulationState) {
+        assert state == State.WALKING;
         Board board = simulationState.getBoard();
-        if (!canMove()) {
-            return;
-        }
         Position randomMove = getPosition().randomAdjacentPosition();
         if (!board.isValid(randomMove)) {
             return;
         }
         if (!board.isEmpty(randomMove)) {
             mayBeChangeStatus(board, randomMove);
+            if (state != State.WALKING) {
+                simulationState.removeActor(this);
+            }
             return;
         }
         doMove(board, randomMove);
@@ -75,10 +66,8 @@ public final class Drunkard implements Movable, Actor {
         BoardObject obstacle = board.getObject(desiredDirection);
         if (obstacle instanceof Column ||
                 (obstacle instanceof Drunkard && ((Drunkard) obstacle).state == State.SLEEPING)) {
-            System.out.println("Column!");
             state = State.SLEEPING;
         } else if (obstacle instanceof Bottle) {
-            System.out.println("Bottle!");
             board.setEmpty(desiredDirection);
             board.move(this, desiredDirection);
             state = State.LYING;
@@ -96,9 +85,5 @@ public final class Drunkard implements Movable, Actor {
 
     private boolean drunkardDropsBottle() {
         return RANDOM.nextInt(30) == 0;
-    }
-
-    private boolean canMove() {
-        return state == State.WALKING;
     }
 }

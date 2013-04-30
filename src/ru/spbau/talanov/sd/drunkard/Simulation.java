@@ -27,13 +27,11 @@ public final class Simulation {
         this.resultOut = resultOut;
         this.debugOut = debugOut;
         Board board = new Board(15);
-        Drunkard drunkard = new Drunkard(new Position(0, 0));
-        board.addObject(drunkard);
         board.addObject(new Column(new Position(7, 7)));
         board.addObject(new Lantern(new Position(10, 3)));
         Inn theInn = new Inn(new Position(9, -1), new Position(9, 0));
         board.addSpecialObject(theInn);
-        this.state = SimulationState.initialState(board, Arrays.<Actor>asList(drunkard, theInn));
+        this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn));
 
     }
 
