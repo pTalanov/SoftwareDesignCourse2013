@@ -48,7 +48,7 @@ public final class Drunkard extends MovableObject implements Actor {
     public void performMove(@NotNull SimulationState simulationState) {
         assert state == State.WALKING;
         Board board = simulationState.getBoard();
-        Position randomMove = getPosition().randomAdjacentPosition();
+        Position randomMove = board.getTopology().getRandomAdjacentPosition(getPosition());
         if (!board.isValid(randomMove)) {
             return;
         }

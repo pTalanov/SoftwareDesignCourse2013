@@ -23,16 +23,19 @@ public final class FindPath {
     @Nullable
     public static List<Position> findPath(@NotNull Position from,
                                           @NotNull PositionPredicate validPosition,
-                                          @NotNull PositionPredicate destination) {
-        return new FindPath(from, validPosition, destination).performBFS();
+                                          @NotNull PositionPredicate destination,
+                                          @NotNull BoardTopology boardTopology) {
+        return new FindPath(from, validPosition, destination, boardTopology).performBFS();
     }
 
     private FindPath(@NotNull Position from,
                      @NotNull PositionPredicate validPosition,
-                     @NotNull PositionPredicate destinationPredicate) {
+                     @NotNull PositionPredicate destinationPredicate,
+                     @NotNull BoardTopology boardTopology) {
         this.from = from;
         this.validPosition = validPosition;
         this.destinationPredicate = destinationPredicate;
+        this.boardTopology = boardTopology;
     }
 
     public interface PositionPredicate {
@@ -49,6 +52,8 @@ public final class FindPath {
     private final PositionPredicate validPosition;
     @NotNull
     private final PositionPredicate destinationPredicate;
+    @NotNull
+    private final BoardTopology boardTopology;
 
     @Nullable
     private List<Position> performBFS() {
@@ -56,7 +61,7 @@ public final class FindPath {
         previousPosition.put(from, null);
         while (!positionQueue.isEmpty()) {
             Position current = positionQueue.poll();
-            for (Position adjacentPosition : current.adjacentPositions()) {
+            for (Position adjacentPosition : boardTopology.getAdjacentPositions(current)) {
                 if (!isVisited(adjacentPosition) &&
                         (validPosition.accepts(adjacentPosition) || destinationPredicate.accepts(adjacentPosition))) {
                     previousPosition.put(adjacentPosition, current);

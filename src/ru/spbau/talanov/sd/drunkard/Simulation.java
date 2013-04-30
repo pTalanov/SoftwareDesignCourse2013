@@ -30,18 +30,19 @@ public final class Simulation {
     public Simulation(@NotNull PrintStream resultOut, @NotNull PrintStream debugOut) {
         this.resultOut = resultOut;
         this.debugOut = debugOut;
-        Board board = new Board(15);
-        board.addObject(new Column(new Position(7, 7)));
-        Lantern lantern = new Lantern(new Position(10, 3));
+        Board board = new Board(15, new RectangularTopology());
+        board.addObject(new Column(Position.at(7, 7)));
+        Lantern lantern = new Lantern(Position.at(10, 3));
         board.addObject(lantern);
-        Inn theInn = new Inn(new Position(9, -1), new Position(9, 0));
+        Inn theInn = new Inn(Position.at(9, -1), Position.at(9, 0));
         board.addSpecialObject(theInn);
-        PoliceStation policeStation = new PoliceStation(new Position(15, 3));
+        PoliceStation policeStation = new PoliceStation(Position.at(15, 3));
         board.addSpecialObject(policeStation);
-        Policeman policeman = new Policeman(new Position(14, 3), policeStation.getPosition(), lantern.getPosition());
-        RecyclingPoint recyclingPoint = new RecyclingPoint(new Position(-1, 4));
+        Policeman policeman = new Policeman(Position.at(14, 3), policeStation.getPosition(),
+                lantern.getPosition(), board.getTopology());
+        RecyclingPoint recyclingPoint = new RecyclingPoint(Position.at(-1, 4));
         board.addSpecialObject(recyclingPoint);
-        Beggar beggar = new Beggar(new Position(0, 4), recyclingPoint.getPosition());
+        Beggar beggar = new Beggar(Position.at(0, 4), recyclingPoint.getPosition());
         this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn, policeman, beggar));
     }
 

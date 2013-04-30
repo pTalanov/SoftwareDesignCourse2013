@@ -3,6 +3,7 @@ package ru.spbau.talanov.sd.drunkard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,17 +18,18 @@ public final class Policeman extends MovableObject implements Actor {
     @NotNull
     private final Position policeStationLocation;
     @NotNull
-    private final List<Position> observableLocations;
+    private final Collection<Position> observableLocations;
     private boolean isAtPoliceStation = true;
     private boolean isCarryingADrunkard = false;
 
     public Policeman(@NotNull Position spawnLocation,
                      @NotNull Position policeStationLocation,
-                     @NotNull Position lanternLocation) {
+                     @NotNull Position lanternLocation,
+                     @NotNull BoardTopology topology) {
         super(policeStationLocation);
         this.spawnLocation = spawnLocation;
         this.policeStationLocation = policeStationLocation;
-        this.observableLocations = Position.allPositionsInRadius(lanternLocation, LANTERN_LIGHT_RADIUS);
+        this.observableLocations = topology.allPositionsInRadius(lanternLocation, LANTERN_LIGHT_RADIUS);
     }
 
     @Override
@@ -106,7 +108,7 @@ public final class Policeman extends MovableObject implements Actor {
             public boolean accepts(@NotNull Position position) {
                 return position.equals(policeStationLocation);
             }
-        });
+        }, board.getTopology());
     }
 
     @NotNull
@@ -138,7 +140,7 @@ public final class Policeman extends MovableObject implements Actor {
                         }
                         return observableLocations.contains(position);
                     }
-                }
+                }, board.getTopology()
         );
     }
 

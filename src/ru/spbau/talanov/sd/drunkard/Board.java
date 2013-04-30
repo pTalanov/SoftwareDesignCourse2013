@@ -13,7 +13,11 @@ public final class Board {
     private static final char EMPTY_CELL_CHAR = '.';
     private static final char NOTHING_CHAR = ' ';
 
-    public Board(int size) {
+    @NotNull
+    private final BoardTopology topology;
+
+    public Board(int size, @NotNull BoardTopology topology) {
+        this.topology = topology;
         this.size = size;
     }
 
@@ -61,11 +65,16 @@ public final class Board {
     }
 
     @NotNull
+    public BoardTopology getTopology() {
+        return topology;
+    }
+
+    @NotNull
     public String representation() {
         StringBuilder sb = new StringBuilder();
         for (int y = getBottom() - 1; y <= getTop(); ++y) {
             for (int x = getLeft() - 1; x <= getRight() + 1; ++x) {
-                sb.append(representationAt(new Position(x, y)));
+                sb.append(representationAt(Position.at(x, y)));
             }
             sb.append("\n");
         }

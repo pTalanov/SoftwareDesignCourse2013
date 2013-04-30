@@ -93,7 +93,7 @@ public final class Beggar extends MovableObject implements Actor {
     }
 
     private void wanderRandomly(@NotNull Board board) {
-        Position randomMove = getPosition().randomAdjacentPosition();
+        Position randomMove = board.getTopology().getRandomAdjacentPosition(getPosition());
         if (board.isEmpty(randomMove) && board.isValid(randomMove)) {
             board.move(this, randomMove);
         }
@@ -106,7 +106,7 @@ public final class Beggar extends MovableObject implements Actor {
             public boolean accepts(@NotNull Position position) {
                 return recyclingPointLocation.equals(position);
             }
-        });
+        }, board.getTopology());
     }
 
     @Nullable
@@ -116,7 +116,7 @@ public final class Beggar extends MovableObject implements Actor {
             public boolean accepts(@NotNull Position position) {
                 return !board.isEmpty(position) && board.getObject(position) instanceof Bottle;
             }
-        });
+        }, board.getTopology());
     }
 
     @NotNull
