@@ -34,6 +34,7 @@ public final class Simulation {
         this.actors = Arrays.<Actor>asList(drunkard);
         this.board.addObject(drunkard);
         board.addObject(new Column(new Position(7, 7)));
+        board.addObject(new Lantern(new Position(10, 3)));
     }
 
     public void simulate() {
