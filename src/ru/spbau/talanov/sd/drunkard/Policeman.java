@@ -30,6 +30,7 @@ public final class Policeman extends MovableObject implements Actor {
         this.spawnLocation = spawnLocation;
         this.policeStationLocation = policeStationLocation;
         this.observableLocations = topology.allPositionsInRadius(lanternLocation, LANTERN_LIGHT_RADIUS);
+        assert !observableLocations.contains(spawnLocation);
     }
 
     @Override

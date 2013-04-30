@@ -23,6 +23,8 @@ public final class Simulation {
 
     private static final int MAX_MOVES = Collections.max(movesToReport);
 
+    private static final boolean USE_HEXAGONAL_GRID = true;
+
     @NotNull
     private final SimulationState state;
 
@@ -30,7 +32,8 @@ public final class Simulation {
     public Simulation(@NotNull PrintStream resultOut, @NotNull PrintStream debugOut) {
         this.resultOut = resultOut;
         this.debugOut = debugOut;
-        Board board = new Board(15, new RectangularTopology());
+        @SuppressWarnings("ConstantConditions")
+        Board board = new Board(15, USE_HEXAGONAL_GRID ? new HexagonalTopology() : new RectangularTopology());
         board.addObject(new Column(Position.at(7, 7)));
         Lantern lantern = new Lantern(Position.at(10, 3));
         board.addObject(lantern);
