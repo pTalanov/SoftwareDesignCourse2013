@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Actor {
 
-    void performMove(@NotNull Board board);
+    void performMove(@NotNull SimulationState simulationState);
 
 }

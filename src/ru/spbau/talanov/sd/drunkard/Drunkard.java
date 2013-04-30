@@ -11,6 +11,7 @@ public final class Drunkard implements Movable, Actor {
 
     public static final Random RANDOM = new Random();
 
+    //TODO: representation depending on state
     private enum State {
         SLEEPING,
         WALKING,
@@ -49,7 +50,8 @@ public final class Drunkard implements Movable, Actor {
     }
 
     @Override
-    public void performMove(@NotNull Board board) {
+    public void performMove(@NotNull SimulationState simulationState) {
+        Board board = simulationState.getBoard();
         if (!canMove()) {
             return;
         }
