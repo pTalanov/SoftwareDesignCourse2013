@@ -40,7 +40,8 @@ public final class Simulation {
         board.addSpecialObject(policeStation);
         Policeman policeman = new Policeman(new Position(14, 3), policeStation.getPosition(), lantern.getPosition());
         this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn, policeman));
-
+        RecyclePoint recyclePoint = new RecyclePoint(new Position(-1, 4));
+        board.addSpecialObject(recyclePoint);
     }
 
     public void simulate() {
