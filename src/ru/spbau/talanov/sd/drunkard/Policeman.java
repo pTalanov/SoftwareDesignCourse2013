@@ -24,7 +24,7 @@ public final class Policeman extends MovableObject implements Actor {
     public Policeman(@NotNull Position spawnLocation,
                      @NotNull Position policeStationLocation,
                      @NotNull Position lanternLocation) {
-        super(spawnLocation);
+        super(policeStationLocation);
         this.spawnLocation = spawnLocation;
         this.policeStationLocation = policeStationLocation;
         this.observableLocations = Position.allPositionsInRadius(lanternLocation, LANTERN_LIGHT_RADIUS);
@@ -101,7 +101,7 @@ public final class Policeman extends MovableObject implements Actor {
 
     @Nullable
     private List<Position> pathToPoliceStation(@NotNull Board board) {
-        return FindPath.findPath(getPosition(), emptyValidPosition(board), new FindPath.PositionPredicate() {
+        return FindPath.findPath(getPosition(), FindPath.emptyValidPosition(board), new FindPath.PositionPredicate() {
             @Override
             public boolean accepts(@NotNull Position position) {
                 return position.equals(policeStationLocation);
@@ -121,7 +121,7 @@ public final class Policeman extends MovableObject implements Actor {
 
     @Nullable
     private List<Position> pathToNearestDrunkard(@NotNull final Board board) {
-        return FindPath.findPath(getPosition(), emptyValidPosition(board),
+        return FindPath.findPath(getPosition(), FindPath.emptyValidPosition(board),
                 new FindPath.PositionPredicate() {
                     @SuppressWarnings("SimplifiableIfStatement")
                     @Override
@@ -140,15 +140,6 @@ public final class Policeman extends MovableObject implements Actor {
                     }
                 }
         );
-    }
-
-    private FindPath.PositionPredicate emptyValidPosition(@NotNull final Board board) {
-        return new FindPath.PositionPredicate() {
-            @Override
-            public boolean accepts(@NotNull Position position) {
-                return board.isEmpty(position) && board.isValid(position);
-            }
-        };
     }
 
     @Override

@@ -39,9 +39,10 @@ public final class Simulation {
         PoliceStation policeStation = new PoliceStation(new Position(15, 3));
         board.addSpecialObject(policeStation);
         Policeman policeman = new Policeman(new Position(14, 3), policeStation.getPosition(), lantern.getPosition());
-        this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn, policeman));
-        RecyclePoint recyclePoint = new RecyclePoint(new Position(-1, 4));
-        board.addSpecialObject(recyclePoint);
+        RecyclingPoint recyclingPoint = new RecyclingPoint(new Position(-1, 4));
+        board.addSpecialObject(recyclingPoint);
+        Beggar beggar = new Beggar(new Position(0, 4), recyclingPoint.getPosition());
+        this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn, policeman, beggar));
     }
 
     public void simulate() {

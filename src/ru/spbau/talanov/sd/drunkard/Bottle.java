@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Pavel Talanov
  */
 public final class Bottle extends ImmobileObject {
-    protected Bottle(@NotNull Position position) {
+    public Bottle(@NotNull Position position) {
         super(position, 'B');
     }
 }

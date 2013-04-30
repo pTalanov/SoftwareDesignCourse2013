@@ -10,6 +10,16 @@ import java.util.*;
  */
 public final class FindPath {
 
+    @NotNull
+    public static PositionPredicate emptyValidPosition(@NotNull final Board board) {
+        return new PositionPredicate() {
+            @Override
+            public boolean accepts(@NotNull Position position) {
+                return board.isEmpty(position) && board.isValid(position);
+            }
+        };
+    }
+
     @Nullable
     public static List<Position> findPath(@NotNull Position from,
                                           @NotNull PositionPredicate validPosition,

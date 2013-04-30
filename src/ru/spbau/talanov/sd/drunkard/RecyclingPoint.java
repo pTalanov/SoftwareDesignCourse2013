@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Pavel Talanov
  */
-public final class RecyclePoint extends ImmobileObject {
-    public RecyclePoint(@NotNull Position position) {
+public final class RecyclingPoint extends ImmobileObject {
+    public RecyclingPoint(@NotNull Position position) {
         super(position, 'R');
     }
 }
