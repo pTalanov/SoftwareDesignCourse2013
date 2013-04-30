@@ -11,11 +11,16 @@ public final class Drunkard implements Movable, Actor {
 
     public static final Random RANDOM = new Random();
 
-    //TODO: representation depending on state
     private enum State {
-        SLEEPING,
-        WALKING,
-        LYING
+        SLEEPING('Z'),
+        WALKING('D'),
+        LYING('&');
+
+        private final char representation;
+
+        private State(char representation) {
+            this.representation = representation;
+        }
     }
 
     @NotNull
@@ -41,7 +46,7 @@ public final class Drunkard implements Movable, Actor {
 
     @Override
     public char representation() {
-        return 'D';
+        return state.representation;
     }
 
     @Override
