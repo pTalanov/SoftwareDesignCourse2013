@@ -64,7 +64,7 @@ public final class Board {
     public String representation() {
         StringBuilder sb = new StringBuilder();
         for (int y = getBottom() - 1; y <= getTop(); ++y) {
-            for (int x = getLeft() - 1; x <= getRight(); ++x) {
+            for (int x = getLeft() - 1; x <= getRight() + 1; ++x) {
                 sb.append(representationAt(new Position(x, y)));
             }
             sb.append("\n");

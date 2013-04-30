@@ -31,6 +31,8 @@ public final class Simulation {
         board.addObject(new Lantern(new Position(10, 3)));
         Inn theInn = new Inn(new Position(9, -1), new Position(9, 0));
         board.addSpecialObject(theInn);
+        PoliceStation policeStation = new PoliceStation(new Position(15, 3));
+        board.addSpecialObject(policeStation);
         this.state = SimulationState.initialState(board, Arrays.<Actor>asList(theInn));
 
     }
